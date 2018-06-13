@@ -11,7 +11,8 @@ module.exports = function () {
     "@core": path.resolve('./src/core'),
     "@env": path.resolve('./src/environments/environment'),
     "@pages": path.resolve('./src/pages'),
-    "@common": path.resolve('./src/common')
+    "@shared": path.resolve('./src/shared'),
+    "@singleton": path.resolve('./src/singleton')
   };
   return useDefaultConfig;
 }

@@ -18,7 +18,8 @@
       "@core/*": [ "core/*" ],
       "@env": [ "environments/environment" ],
       "@pages/*": [ "pages/*" ],
-      "@common/*": [ "shared/*" ]
+      "@shared/*": [ "shared/*" ],
+      "@singleton/*": [ "singleton/*" ]
     }
   },
   "include": [

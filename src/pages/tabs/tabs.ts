@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 //import { AboutPage } from '../about/about';
 //import { ContactPage } from '../contact/contact';
 
-import {LazyPages} from '@app/LazyPages';
+import {LazyPages} from '@app/lazy-pages';
 
 @Component({
   templateUrl: 'tabs.html'
