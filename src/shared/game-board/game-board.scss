@@ -1,0 +1,15 @@
+game-board {
+
+  .row {
+    height: 20vh;
+  }
+
+  .linedRow {
+    border-bottom: 4px solid black;
+  }
+
+  .linedColumn {
+    border-right: 4px solid black;
+  }
+
+}

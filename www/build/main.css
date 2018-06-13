@@ -25677,3 +25677,27 @@ ion-navbar.toolbar {
   min-height: calc(46px + constant(safe-area-inset-bottom));
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
+
+game-board .row {
+  height: 20vh;
+}
+
+game-board .linedRow {
+  border-bottom: 4px solid black;
+}
+
+game-board .linedColumn {
+  border-right: 4px solid black;
+}
+
+player-header .row {
+  height: 10vh;
+}
+
+player-header .linedRow {
+  border-bottom: 4px solid black;
+}
+
+player-header .linedColumn {
+  border-right: 4px solid black;
+}

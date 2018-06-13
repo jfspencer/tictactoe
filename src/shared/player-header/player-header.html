@@ -1,0 +1,13 @@
+<ion-grid>
+  <ion-row align-items-start>
+    <ion-col>
+      <h4>player 1 {{player1AtPlay}}</h4>
+      <h5 *ngIf="atPlay === 0">At Play</h5>
+    </ion-col>
+    <ion-col>
+      <h4>Player 2 {{player2AtPlay}}</h4>
+      <h5 *ngIf="atPlay === 1">At Play</h5>
+    </ion-col>
+
+  </ion-row>
+</ion-grid>

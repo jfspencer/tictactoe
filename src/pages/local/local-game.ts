@@ -8,6 +8,8 @@ import { NavController, IonicPage } from 'ionic-angular';
 })
 export class LocalGamePage {
 
+  activePlayer = 0;
+
   constructor(public navCtrl: NavController) {
 
   }
