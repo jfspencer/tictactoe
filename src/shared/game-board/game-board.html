@@ -1,35 +1,44 @@
 <ion-grid>
   <ion-row class="linedRow">
-    <ion-col class="linedColumn">
-      <div>hi</div>
+    <ion-col class="linedColumn" (click)="playerAction('UL')">
+      <div *ngIf="state.UL === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.UL === 1"><p class="markStyle">X</p></div>
     </ion-col>
-    <ion-col class="linedColumn">
-      hi
+    <ion-col class="linedColumn" (click)="playerAction('UM')">
+      <div *ngIf="state.UM === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.UM === 1"><p class="markStyle">X</p></div>
     </ion-col>
-    <ion-col>
-      hi
+    <ion-col  (click)="playerAction('UR')">
+      <div *ngIf="state.UR === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.UR === 1"><p class="markStyle">X</p></div>
     </ion-col>
   </ion-row>
   <ion-row class="linedRow">
-    <ion-col class="linedColumn">
-      hi
+    <ion-col class="linedColumn" (click)="playerAction('ML')">
+      <div *ngIf="state.ML === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.ML === 1"><p class="markStyle">X</p></div>
     </ion-col>
-    <ion-col class="linedColumn">
-      hi
+    <ion-col class="linedColumn" (click)="playerAction('MM')">
+      <div *ngIf="state.MM === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.MM === 1"><p class="markStyle">X</p></div>
     </ion-col>
-    <ion-col>
-      hi
+    <ion-col  (click)="playerAction('MR')">
+      <div *ngIf="state.MR === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.MR === 1"><p class="markStyle">X</p></div>
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col class="linedColumn">
-      hi
+    <ion-col class="linedColumn" (click)="playerAction('LL')">
+      <div *ngIf="state.LL === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.LL === 1"><p class="markStyle">X</p></div>
     </ion-col>
-    <ion-col class="linedColumn">
-      hi
+    <ion-col class="linedColumn"  (click)="playerAction('LM')">
+      <div *ngIf="state.LM === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.LM === 1"><p class="markStyle">X</p></div>
     </ion-col>
-    <ion-col>
-      hi
+    <ion-col (click)="playerAction('LR')">
+      <div *ngIf="state.LR === 0"><p class="markStyle">O</p></div>
+      <div *ngIf="state.LR === 1"><p class="markStyle">X</p></div>
     </ion-col>
   </ion-row>
 </ion-grid>

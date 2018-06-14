@@ -18,11 +18,12 @@ Original Spec
 --------------------------------
 
 UX Support Spec
-- [ ] UI must be lazy loaded to minimize load time
-- [ ] UI should indicate which player is active for a given turn
+- [X] UI must be lazy loaded to minimize load time
+- [X] UI should indicate which player is active for a given turn
 - [ ] Game state should be reactively durable
 - [ ] Logic mechanics should use Reactive Functional Programming techniques (https://www.reactivemanifesto.org)
 - [ ] Should have a decent splash screen
+- [X] Implement no take backs
 - [ ] allow users to take turns on the same device
 - [ ] allow each player to use their own device
 

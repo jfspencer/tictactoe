@@ -1,15 +1,23 @@
 game-board {
-
+  $boxHeight: 20vh;
+  $lineThickness: 4px;
   .row {
-    height: 20vh;
+    height: $boxHeight;
   }
 
   .linedRow {
-    border-bottom: 4px solid black;
+    border-bottom: $lineThickness solid black;
   }
 
   .linedColumn {
-    border-right: 4px solid black;
+    border-right: $lineThickness solid black;
+  }
+
+  .markStyle {
+    font-size: 10vw;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0;
   }
 
 }

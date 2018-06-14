@@ -5,6 +5,6 @@
 </ion-header>
 
 <ion-content padding>
-  <player-header [atPlay]="activePlayer"></player-header>
-  <game-board></game-board>
+  <player-header [turn]="activeTurn" [players]="players"></player-header>
+  <game-board [turn]="activeTurn"></game-board>
 </ion-content>

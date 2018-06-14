@@ -25690,6 +25690,13 @@ game-board .linedColumn {
   border-right: 4px solid black;
 }
 
+game-board .markStyle {
+  font-size: 10vw;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
+}
+
 player-header .row {
   height: 10vh;
 }
