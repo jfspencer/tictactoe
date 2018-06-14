@@ -3,7 +3,6 @@ FRP TicTacToe
 
 Note:
 - .gitignore not added for dev consumption convenience
-- published with public test link on TestFlight
 
 Base Spec
 - [X] build a tic tac toe game
