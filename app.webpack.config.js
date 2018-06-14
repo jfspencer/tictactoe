@@ -6,7 +6,7 @@ const path = require('path');
 const env = process.env.IONIC_ENV;
 
 module.exports = function () {
-  useDefaultConfig[env].devtool = 'inline-source-map';
+  //useDefaultConfig[env].devtool = 'inline-source-map';
   useDefaultConfig[env].resolve.alias = {
     '@app': path.resolve('./src/app'),
     "@core": path.resolve('./src/core'),

@@ -21,8 +21,8 @@ export class DomainWorker {
     _id: gameId,
     type: RecordType.Game,
     players: [
-      {name: 'Christopher Nolan', turnId: 0, dbId: 'player0'},
-      {name: 'Alfred Hitchcock', turnId: 1, dbId: 'player1'}],
+      {name: 'Chris Nolan', turnId: 0, dbId: 'player0'},
+      {name: 'Al Hitchcock', turnId: 1, dbId: 'player1'}],
       activeTurn: 0,
       sequence: {
         _id: Utils.genId(), //id will be a foriegn key of the game record

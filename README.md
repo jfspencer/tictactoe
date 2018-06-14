@@ -19,6 +19,7 @@ Base Spec
 --------------------------------
 Some things that would be cool to add
 UX Support Spec
+- [X] seamlessly responsive to screen sizes from mobile to desktop
 - [X] lazy load the UI to minimize load time
 - [X] UI should indicate which player is active for a given turn
 - [X] Logic mechanics should use Reactive Functional Programming techniques (https://www.reactivemanifesto.org)
