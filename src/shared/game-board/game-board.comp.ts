@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import { Game, Player, BoardState, TurnEvent, Move } from '@shared/interfaces';
+import { BoardState, TurnEvent, Move } from '@shared/interfaces';
 import { now } from 'lodash/fp';
 
 @Component({

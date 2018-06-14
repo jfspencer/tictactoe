@@ -5,7 +5,9 @@
 </ion-header>
 
 <ion-content padding>
-  <button (click)="createNewGame()">New Game</button>
   <player-header [turn]="activeTurn" [players]="players"></player-header>
   <game-board [turn]="activeTurn" [boardState]="boardState" (turnEvents)="processTurn($event)"></game-board>
+  <ion-fab bottom right (click)="promptForNewGame()">
+    <button ion-fab><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

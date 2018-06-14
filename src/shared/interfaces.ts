@@ -20,6 +20,7 @@ export interface Game {
     _rev?: string;
     type: RecordType.Game;
     players: GamePlayers;
+    sequence: MoveSequence;
     activeTurn: number;
     gameInProgress: boolean;
     playersReady: string[];

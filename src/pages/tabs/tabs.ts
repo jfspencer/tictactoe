@@ -11,8 +11,8 @@ import {LazyPages} from '@app/lazy-pages';
 export class TabsPage {
 
   tab1Root = LazyPages.LOCAL_GAME;
-  tab2Root = LazyPages.REMOTE_GAME;
-  tab3Root = LazyPages.SETTINGS;
+  //tab2Root = LazyPages.REMOTE_GAME;
+  //tab3Root = LazyPages.SETTINGS;
 
   constructor() {
 

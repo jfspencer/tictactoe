@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {IonicPage, AlertController } from 'ionic-angular';
-import {Game, TurnEvent, BoardState } from '@shared/interfaces';
-import {Persistence} from '@singleton/persist';
+import {Game, TurnEvent, BoardState, GamePlayers } from '@shared/interfaces';
 import { get } from 'lodash';
+import { DomainWorker } from '@singleton/domain.worker';
 
 @IonicPage()
 @Component({
@@ -10,6 +10,7 @@ import { get } from 'lodash';
   templateUrl: 'local-game.html'
 })
 export class LocalGamePage {
+  players: GamePlayers;
 
   activeTurn = 0;
   boardState: BoardState = {
@@ -19,37 +20,54 @@ export class LocalGamePage {
   };
   game: Game;
 
-  constructor(private alertCtrl: AlertController, private persist: Persistence) {
+  constructor(private alertCtrl: AlertController, private domainWorker: DomainWorker) {
 
   }
 
   ionViewDidLoad() {
-    this.createNewGame();
-    const startGameAlert = this.alertCtrl.create();
-
-    //check for active game, load if exists
-    //or alert to start new game
-    //
-
-    //pull in player data from settings
+    this.createNewGame()
   }
 
   createNewGame() {
-    this.persist.startGame(true).fork(e => console.log(e), game => {this.game; console.log(game)});
-    this.activeTurn = get(this, 'game.activeTurn',0);
+    this.domainWorker.startGame(true).fork(
+      e => console.log(e),
+      game => {
+        this.game = game;
+        this.activeTurn = get(this, 'game.activeTurn',0);
+        this.boardState = this.domainWorker.newBoardState(this.game);
+        this.players = game.players;
+      });
     //create a game record in the game db, mark the game is active
     //create write sequence record in
+  }
+
+  promptForNewGame() {
+    this.alertCtrl.create({
+      title: 'Start a new game?',
+      buttons: [
+        {text: 'Cancel',role: 'cancel',handler: () => null},
+        {text: 'New Game', handler: () => this.createNewGame()}]
+    }).present()
   }
 
   processTurn(turn: TurnEvent) {
     //make other players turn active;
     this.activeTurn = this.activeTurn === 0 ? 1 : 0;
 
-    //send turn to this users' & game's moveSequence record
-    //this.persist.updateMoveSequence(this.game, turn).fork(e => console.error(e), newBoard => {this.boardState = newBoard; console.log(newBoard)})
-    //construct a new state of the game
+    //generate a new game state
+    this.game = this.domainWorker.updateGameSequence(this.game, turn)
 
-    //determine if there is a winner from the game state
+    //generate a new board state for the game-board component
+    this.boardState = this.domainWorker.newBoardState(this.game);
+
+    //check if there is a winner
+    const winner = this.domainWorker.determineWinner(this.game.sequence, this.game.players);
+
+    //if there is a winner garnish them with accolades
+    winner ? this.alertCtrl.create({
+      title: winner.name + ' is the winner!',
+      buttons: [{text: 'Play Again',handler: () => this.createNewGame()}]
+    }).present() : null;
   }
 
 }

@@ -7,27 +7,26 @@ Note:
 
 Original Spec
 
-- [ ] build a tic tac toe game
+- [X] build a tic tac toe game
 - [X] use a mobile framework (like ionic)
-- [ ] Allow 2 players to play tic tac toe (Follow the rules of tic tac toe)
+- [X] Allow 2 players to play tic tac toe (Follow the rules of tic tac toe)
 - [X] Have 3x3 grid on which the players can play
-- [ ] Allow the players to take turns marking spaces on the 3x3 grid
-- [ ] Recognize when a player has won and declare that player as victorious
-- [ ] Allow the user to start a new game
+- [X] Allow the players to take turns marking spaces on the 3x3 grid
+- [X] Recognize when a player has won and declare that player as victorious
+- [X] Allow the user to start a new game
+
 
 --------------------------------
-
+Some things that would be cool to add
 UX Support Spec
-- [X] UI must be lazy loaded to minimize load time
+- [X] lazy load the UI to minimize load time
 - [X] UI should indicate which player is active for a given turn
-- [ ] Game state should be reactively durable
-- [ ] Logic mechanics should use Reactive Functional Programming techniques (https://www.reactivemanifesto.org)
-- [ ] Should have a decent splash screen
+- [X] Logic mechanics should use Reactive Functional Programming techniques (https://www.reactivemanifesto.org)
 - [X] Implement no take backs
-- [ ] allow users to take turns on the same device
-- [ ] allow each player to use their own device
+- [ ] Game state should be reactively durable
 
 Remote Play Spec
+- [X] setup couchDB instance for testing
 - [ ] requires a unique name. name will be persisted to the user lookup db.
 - [ ] provide a list of users to play against
 - [ ] allow remote user to accept or deny a new game
@@ -37,7 +36,3 @@ Remote Play Spec
 - [ ] one database per user for write side operations
 - [ ] stream in other users' to complete UI game state
 - [ ] prevent user from marking the board during the other players turn
-
-Maintenance Spec
-- [ ] Should have 100% logic code coverage
-- [ ] Should have common use case integration tests

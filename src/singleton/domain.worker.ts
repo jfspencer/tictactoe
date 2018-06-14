@@ -1,13 +1,54 @@
-import { Player, MoveSequence, GamePlayers, TurnEvent,  } from '@shared/interfaces';
+import { Player, MoveSequence, GamePlayers, Game, TurnEvent, RecordType, BoardState } from '@shared/interfaces';
 import { Injectable } from '@angular/core';
 import { reduce, union, curry, difference } from 'lodash/fp';
 import { Either } from 'monet';
+import { Future } from 'fluture';
+import { Utils} from '@singleton/util';
+import {cloneDeep} from 'lodash';
 
 
 @Injectable()
 export class DomainWorker {
 
   constructor(){}
+
+  startGame(isLocal: boolean): Future<never, Game> {
+    //gen a new game id
+    const gameId = Utils.genId();
+
+    //define a local game
+    const newLocalGame: Game = {
+    _id: gameId,
+    type: RecordType.Game,
+    players: [
+      {name: 'Christopher Nolan', turnId: 0, dbId: 'player0'},
+      {name: 'Alfred Hitchcock', turnId: 1, dbId: 'player1'}],
+      activeTurn: 0,
+      sequence: {
+        _id: Utils.genId(), //id will be a foriegn key of the game record
+        gameId: 'test',
+        type: RecordType.MoveSequence,
+        moves: []
+      },
+      gameInProgress: true,
+      playersReady: ['player0', 'player1']
+    };
+    localStorage.setItem('activeGame', gameId);
+    return Future.of(isLocal ? newLocalGame : newLocalGame);
+  }
+
+  updateGameSequence(game: Game, turn: TurnEvent) {
+    game.sequence.moves = union(game.sequence.moves, [turn])
+    return cloneDeep(game);
+  }
+
+  newBoardState(game: Game) : BoardState {
+    const newGame = reduce((boardState, turnEvent: TurnEvent ) => {
+      boardState[turnEvent.move] = turnEvent.turn;
+      return boardState;
+    }, this.buildEmptyBoard())(game.sequence.moves);
+    return cloneDeep(newGame);
+  }
 
   determineWinner(moveSeq: MoveSequence, players: GamePlayers): Player | null {
     const playerMoves = reduce((accum, val: TurnEvent) => {
@@ -37,4 +78,11 @@ export class DomainWorker {
     ['UR', 'MM', 'LL'], //top right to bottom left diagnoal
   ];
 
+  private buildEmptyBoard(): BoardState {
+    return cloneDeep({
+      UL: null, UM: null, UR: null,
+      ML: null, MM: null, MR: null,
+      LL: null, LM: null, LR: null
+    })
+  }
 }
