@@ -1,10 +1,10 @@
-import { Player, MoveSequence, GamePlayers, Game, TurnEvent, RecordType, BoardState } from '@shared/interfaces';
+import { Player, MoveSequence, GamePlayers, Game, TurnEvent, RecordType, BoardState } from '../shared/interfaces';
 import { Injectable } from '@angular/core';
 import { reduce, union, curry, difference } from 'lodash/fp';
 import { Either } from 'monet';
 import { Future } from 'fluture';
-import { Utils} from '@singleton/util';
-import {cloneDeep} from 'lodash';
+import { Utils} from './util';
+import {cloneDeep, assign} from 'lodash';
 
 
 @Injectable()
@@ -39,15 +39,15 @@ export class DomainWorker {
 
   updateGameSequence(game: Game, turn: TurnEvent) {
     game.sequence.moves = union(game.sequence.moves, [turn])
-    return cloneDeep(game);
+    return assign({}, game);
   }
 
   newBoardState(game: Game) : BoardState {
-    const newGame = reduce((boardState, turnEvent: TurnEvent ) => {
+    const newBoardState = reduce((boardState, turnEvent: TurnEvent ) => {
       boardState[turnEvent.move] = turnEvent.turn;
       return boardState;
     }, this.buildEmptyBoard())(game.sequence.moves);
-    return cloneDeep(newGame);
+    return cloneDeep(newBoardState);
   }
 
   determineWinner(moveSeq: MoveSequence, players: GamePlayers): Player | null {

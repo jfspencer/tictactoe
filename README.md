@@ -5,8 +5,7 @@ Note:
 - .gitignore not added for dev consumption convenience
 - published with public test link on TestFlight
 
-Original Spec
-
+Base Spec
 - [X] build a tic tac toe game
 - [X] use a mobile framework (like ionic)
 - [X] Allow 2 players to play tic tac toe (Follow the rules of tic tac toe)
@@ -14,6 +13,7 @@ Original Spec
 - [X] Allow the players to take turns marking spaces on the 3x3 grid
 - [X] Recognize when a player has won and declare that player as victorious
 - [X] Allow the user to start a new game
+- [X] unit tests (coverage could be better)
 
 
 --------------------------------
