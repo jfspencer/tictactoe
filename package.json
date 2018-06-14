@@ -9,7 +9,8 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "test": "jest"
   },
   "dependencies": {
     "@angular/animations": "5.2.11",
@@ -39,6 +40,7 @@
     "lodash": "^4.17.10",
     "monet": "^0.9.0-alpha.4",
     "pouchdb": "^6.4.3",
+    "remove": "^0.1.5",
     "rxjs": "5.5.11",
     "rxmq": "^1.2.0",
     "sw-toolbox": "3.6.0",
@@ -46,14 +48,26 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.10",
+    "@types/jest": "^23.1.0",
     "@types/lodash": "^4.14.109",
     "@types/pouchdb": "^6.3.2",
     "cypress": "^3.0.1",
     "jest": "^23.1.0",
+    "jest-preset-angular": "^5.2.2",
+    "ts-jest": "^22.4.6",
     "typescript": "~2.6.2"
   },
   "config": {
     "ionic_webpack": "./app.webpack.config.js"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupJest.ts",
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "./tsconfig.json"
+      }
+    }
   },
   "description": "An Ionic project",
   "cordova": {
