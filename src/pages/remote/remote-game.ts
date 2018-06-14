@@ -12,4 +12,6 @@ export class RemoteGamePage {
 
   }
 
+  //ensure both devices are on different users
+
 }

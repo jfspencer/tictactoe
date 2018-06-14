@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage } from 'ionic-angular';
-import { GamePlayers } from '@shared/interfaces';
+import {IonicPage, AlertController } from 'ionic-angular';
+import {Game, TurnEvent, BoardState } from '@shared/interfaces';
+import {Persistence} from '@singleton/persist';
+import { get } from 'lodash';
 
 @IonicPage()
 @Component({
@@ -10,10 +12,38 @@ import { GamePlayers } from '@shared/interfaces';
 export class LocalGamePage {
 
   activeTurn = 0;
-  players: GamePlayers = [{name:'Jim', turnId: 0, dbId:'1234'},{name:'Jones', turnId: 1, dbId:'12345'}]
+  boardState: BoardState;
+  game: Game;
 
-  constructor(public navCtrl: NavController) {
+  constructor(private alertCtrl: AlertController, private persist: Persistence) {
 
+  }
+
+  ionViewDidLoad() {
+    const startGameAlert = this.alertCtrl.create();
+    //check for active game, load if exists
+    //or alert to start new game
+    //
+
+    //pull in player data from settings
+  }
+
+  createNewGame() {
+    this.persist.startGame(true).fork(e => console.log(e), game => this.game);
+    this.activeTurn = get(this, 'game.activeTurn',0);
+    //create a game record in the game db, mark the game is active
+    //create write sequence record in
+  }
+
+  processTurn(turn: TurnEvent) {
+    //make other players turn active;
+    this.activeTurn = this.activeTurn === 0 ? 1 : 0;
+
+    //send turn to this users' & game's moveSequence record
+    this.persist.updateMoveSequence(this.game, turn).fork(e => console.error(e), newBoard => this.boardState)
+    //construct a new state of the game
+
+    //determine if there is a winner from the game state
   }
 
 }

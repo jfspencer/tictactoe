@@ -8,7 +8,7 @@ Note:
 Original Spec
 
 - [ ] build a tic tac toe game
-- [ ] use a mobile framework (like ionic)
+- [X] use a mobile framework (like ionic)
 - [ ] Allow 2 players to play tic tac toe (Follow the rules of tic tac toe)
 - [X] Have 3x3 grid on which the players can play
 - [ ] Allow the players to take turns marking spaces on the 3x3 grid
@@ -36,6 +36,7 @@ Remote Play Spec
   - [ ] include online state flag, to prevent orphan game requests
 - [ ] one database per user for write side operations
 - [ ] stream in other users' to complete UI game state
+- [ ] prevent user from marking the board during the other players turn
 
 Maintenance Spec
 - [ ] Should have 100% logic code coverage

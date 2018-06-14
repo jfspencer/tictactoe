@@ -1,5 +1,6 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import { GameState, Player, BoardState, TurnEvent, Move } from '@shared/interfaces';
+import { Game, Player, BoardState, TurnEvent, Move } from '@shared/interfaces';
+import { now } from 'lodash/fp';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,12 +18,12 @@ export class GameBoardComponent {
       UL: null, UM: null, UR: null,
       ML: null, MM: null, MR: null,
       LL: null, LM: null, LR: null
-    }
+    };
   }
 
   playerAction(move: Move) {
     this.boardState[move] = this.turn;
-    this.turnEvents.emit({move: move, player: this.player});
+    this.turnEvents.emit({move: move, player: this.player, time: now()});
   }
 
 }
