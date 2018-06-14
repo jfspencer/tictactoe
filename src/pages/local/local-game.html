@@ -6,6 +6,6 @@
 
 <ion-content padding>
   <button (click)="createNewGame()">New Game</button>
-  <player-header [turn]="activeTurn" [players]="game.players"></player-header>
+  <player-header [turn]="activeTurn" [players]="players"></player-header>
   <game-board [turn]="activeTurn" [boardState]="boardState" (turnEvents)="processTurn($event)"></game-board>
 </ion-content>

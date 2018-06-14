@@ -42,7 +42,7 @@ export interface BoardState {
 //particle supporting the MoveSequence Type and other UI elements
 export interface TurnEvent {
   move: Move;
-  player: Player;
+  turn: number;
   time: number;
 }
 

@@ -9,7 +9,6 @@ import { now } from 'lodash/fp';
 })
 export class GameBoardComponent {
   @Input() turn: number;
-  @Input() player: Player;
   @Input() boardState: BoardState;
   @Output() turnEvents = new EventEmitter<TurnEvent>();
 
@@ -23,7 +22,7 @@ export class GameBoardComponent {
 
   playerAction(move: Move) {
     this.boardState[move] = this.turn;
-    this.turnEvents.emit({move: move, player: this.player, time: now()});
+    this.turnEvents.emit({move: move, turn: this.turn, time: now()});
   }
 
 }

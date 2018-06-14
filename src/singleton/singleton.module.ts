@@ -1,10 +1,11 @@
 import {NgModule, Optional, SkipSelf} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {Persistence} from '@singleton/persist';
 
 @NgModule({
   imports: [BrowserModule],
   declarations: [],
-  providers: [],
+  providers: [Persistence],
   exports: [BrowserModule]
 })
 export class SingletonModule {

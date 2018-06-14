@@ -3,7 +3,7 @@ import { TurnEvent, Game, RecordType, BoardState, MoveSequence } from '@shared/i
 import * as PouchDB from 'pouchdb';
 import { Future, tryP } from 'fluture';
 import {Utils} from '@singleton/util';
-import { union } from 'lodash';
+import { union, curry } from 'lodash';
 
 @Injectable()
 export class Persistence {
@@ -23,7 +23,7 @@ export class Persistence {
     this.player1 = new PouchDB('http://35.165.4.114:5984/player1', {auth:{username:'admin', password:'loveseat'}});
   }
 
-  updateMoveSequence(game: Game, turn: TurnEvent): Future<never, BoardState> {
+  updateMoveSequence(game: Game, turn: TurnEvent): Future<{}, BoardState> {
     //write move to players game MoveSequence
 
     //side effect to update current player's turn
@@ -34,19 +34,20 @@ export class Persistence {
     })
     .fork(e => console.error(e), v => v);
 
-    const processTurn = tryP(() => this[turn.player.dbId].get(game._id));
-    processTurn
-      .chain((moveSeq: MoveSequence) => {
-        moveSeq.moves = union(moveSeq.moves, [turn])
-        this[turn.player.dbId].put()
-      })
-      .ap(tryP(() => this[turn.player.dbId].get(game._id)))
-      .ap(tryP(() => this[turn.player.dbId === 'player0' ? 'player1' : 'player0'].get(game._id)))
-    const turnSequence = ;
-    const otherTurnSequence = ;
-    //construct a new board state and return as a future
+    return tryP(() => this[turn.player.dbId].get(game._id))
+    .chain((moveSeq: MoveSequence) => {
 
-    return Future.of(this.buildBoardState());
+      moveSeq.moves = union(moveSeq.moves, [turn])
+      //side effect to update moveSeq
+      this[turn.player.dbId].put(moveSeq);
+      return Future.of(moveSeq);
+    })
+    .chain(moveSeq => {
+      const partialAP:any = curry((moveSeq, moveSeq2) => this.buildBoardState(moveSeq, moveSeq2));
+      partialAP(moveSeq);
+      return Future.of(partialAP);
+    })
+    .ap(tryP(() => <any>this[turn.player.dbId === 'player0' ? 'player1' : 'player0'].get(game._id)))
   }
 
   getActiveGame() {
@@ -59,11 +60,11 @@ export class Persistence {
 
     //define a local game
     const newLocalGame: Game = {
-      _id: gameId,
-      type: RecordType.Game,
-      players: [
-        {name: 'Christopher Nolan', turnId: 0, dbId: 'player0'},
-        {name: 'Alfred Hitchcock', turnId: 1, dbId: 'player1'}],
+    _id: gameId,
+    type: RecordType.Game,
+    players: [
+      {name: 'Christopher Nolan', turnId: 0, dbId: 'player0'},
+      {name: 'Alfred Hitchcock', turnId: 1, dbId: 'player1'}],
       activeTurn: 0,
       gameInProgress: true,
       playersReady: ['player0', 'player1']
