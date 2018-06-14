@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
-import { Players } from '@shared/interfaces';
+import { GamePlayers } from '@shared/interfaces';
 
 @IonicPage()
 @Component({
@@ -9,8 +9,8 @@ import { Players } from '@shared/interfaces';
 })
 export class LocalGamePage {
 
-  activeTurn = 1;
-  players: Players = [{name:'Jim', turnId: 0, dbId:'1234'},{name:'Jones', turnId: 1, dbId:'12345'}]
+  activeTurn = 0;
+  players: GamePlayers = [{name:'Jim', turnId: 0, dbId:'1234'},{name:'Jones', turnId: 1, dbId:'12345'}]
 
   constructor(public navCtrl: NavController) {
 

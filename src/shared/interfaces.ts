@@ -1,12 +1,32 @@
+export type Move =
+  'UL' | 'UM' | 'UR' |
+  'ML' | 'MM' | 'MR' |
+  'LL' | 'LM' | 'LR';
+
 export  interface GameState {
-    UL: string; UM: string; UR: string;
-    ML: string; MM: string; MR: string;
-    LL: string; LM: string; LR: string;
-    GameId: string;
-    players: Players;
+    boardState : BoardState;
+    gameId: string;
+    players: GamePlayers;
     activeTurn: number;
 }
 
-export interface Players {
-  [index: number]: {name: string, turnId: number, dbId: string};
+export interface BoardState {
+  UL: number; UM: number; UR: number;
+  ML: number; MM: number; MR: number;
+  LL: number; LM: number; LR: number;
+}
+
+export interface TurnEvent {
+  move: Move,
+  player: Player
+}
+
+export interface GamePlayers {
+  [index: number]: Player;
+}
+
+export interface Player {
+  name: string;
+  turnId: number;
+  dbId: string;
 }

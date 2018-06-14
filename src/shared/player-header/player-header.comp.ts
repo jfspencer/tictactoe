@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import { Players } from '@shared/interfaces';
+import { GamePlayers } from '@shared/interfaces';
 
 @Component({
   selector: 'player-header',
@@ -7,7 +7,7 @@ import { Players } from '@shared/interfaces';
 })
 export class PlayerHeaderComponent {
   @Input() turn: number;
-  @Input() players: Players;
+  @Input() players: GamePlayers;
 
 
 
