@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import {IonicPage, AlertController } from 'ionic-angular';
-import {Game, TurnEvent, BoardState, GamePlayers } from '@shared/interfaces';
+import {Game, TurnEvent, BoardState, GamePlayers, Player } from '@shared/interfaces';
 import { get } from 'lodash';
 import { DomainWorker } from '@singleton/domain.worker';
+import { Either } from 'monet';
 
 @IonicPage()
 @Component({
@@ -63,11 +64,19 @@ export class LocalGamePage {
     //check if there is a winner
     const winner = this.domainWorker.determineWinner(this.game.sequence, this.game.players);
 
-    //if there is a winner garnish them with accolades
-    winner ? this.alertCtrl.create({
-      title: winner.name + ' is the winner!',
+    (get(winner, 'name') === 'Scratch Game!' ? Either.Left(this.endGameAlert(winner.name)) : Either.Right(winner))
+      .flatMap((w: Player) => {
+        w ? this.endGameAlert(w.name + ' is the winner!') : null;
+        return Either.Left(null);
+      });
+  }
+
+  endGameAlert(msg: string) {
+    this.alertCtrl.create({
+      title: msg,
       buttons: [{text: 'Play Again',handler: () => this.createNewGame()}]
-    }).present() : null;
+    }).present();
+    return null;
   }
 
 }

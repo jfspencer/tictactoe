@@ -51,17 +51,20 @@ export class DomainWorker {
   }
 
   determineWinner(moveSeq: MoveSequence, players: GamePlayers): Player | null {
-    const playerMoves = reduce((accum, val: TurnEvent) => {
-      accum['player' + val.turn] = union(accum['player' + val.turn], [val.move]);
-      return accum;
-    }, {player0: [], player1: []})(moveSeq.moves);
+    return (moveSeq.moves.length >= 9 ? Either.Left({name:'Scratch Game!'}) : Either.Right(null))
+      .flatMap(isNull => {
+        const playerMoves = reduce((accum, val: TurnEvent) => {
+          accum['player' + val.turn] = union(accum['player' + val.turn], [val.move]);
+          return accum;
+        }, {player0: [], player1: []})(moveSeq.moves);
 
-    const checkPlayerMoves = (moves, won, combo:string[]) => {
-      const test = difference(combo, moves)
-      return won ? true : test.length === 0};
-    const p0 = reduce(curry(checkPlayerMoves)(playerMoves.player0), false)(this.winningCombinations);
-    const p1 = reduce(curry(checkPlayerMoves)(playerMoves.player1), false)(this.winningCombinations);
-    return (p0 ? Either.Left(players[0]) : Either.Right(p1))
+        const checkPlayerMoves = (moves, won, combo:string[]) => {
+          const test = difference(combo, moves)
+          return won ? true : test.length === 0};
+        const p0 = reduce(curry(checkPlayerMoves)(playerMoves.player0), false)(this.winningCombinations);
+        const p1 = reduce(curry(checkPlayerMoves)(playerMoves.player1), false)(this.winningCombinations);
+        return (p0 ? Either.Left(players[0]) : Either.Right(p1));
+      })
       .flatMap(p1DidWin => p1DidWin ? Either.Left(players[1]) : Either.Right(null))
       .cata(v => v, v => v);
   }

@@ -170,17 +170,21 @@ var DomainWorker = /** @class */ (function () {
         return Object(__WEBPACK_IMPORTED_MODULE_6_lodash__["cloneDeep"])(newBoardState);
     };
     DomainWorker.prototype.determineWinner = function (moveSeq, players) {
-        var playerMoves = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(function (accum, val) {
-            accum['player' + val.turn] = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["union"])(accum['player' + val.turn], [val.move]);
-            return accum;
-        }, { player0: [], player1: [] })(moveSeq.moves);
-        var checkPlayerMoves = function (moves, won, combo) {
-            var test = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["difference"])(combo, moves);
-            return won ? true : test.length === 0;
-        };
-        var p0 = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["curry"])(checkPlayerMoves)(playerMoves.player0), false)(this.winningCombinations);
-        var p1 = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["curry"])(checkPlayerMoves)(playerMoves.player1), false)(this.winningCombinations);
-        return (p0 ? __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Left(players[0]) : __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Right(p1))
+        var _this = this;
+        return (moveSeq.moves.length >= 9 ? __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Left({ name: 'Scratch Game!' }) : __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Right(null))
+            .flatMap(function (isNull) {
+            var playerMoves = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(function (accum, val) {
+                accum['player' + val.turn] = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["union"])(accum['player' + val.turn], [val.move]);
+                return accum;
+            }, { player0: [], player1: [] })(moveSeq.moves);
+            var checkPlayerMoves = function (moves, won, combo) {
+                var test = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["difference"])(combo, moves);
+                return won ? true : test.length === 0;
+            };
+            var p0 = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["curry"])(checkPlayerMoves)(playerMoves.player0), false)(_this.winningCombinations);
+            var p1 = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["curry"])(checkPlayerMoves)(playerMoves.player1), false)(_this.winningCombinations);
+            return (p0 ? __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Left(players[0]) : __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Right(p1));
+        })
             .flatMap(function (p1DidWin) { return p1DidWin ? __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Left(players[1]) : __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Right(null); })
             .cata(function (v) { return v; }, function (v) { return v; });
     };
