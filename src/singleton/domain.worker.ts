@@ -60,7 +60,8 @@ export class DomainWorker {
 
         const checkPlayerMoves = (moves, won, combo:string[]) => {
           const test = difference(combo, moves)
-          return won ? true : test.length === 0};
+          return won ? true : test.length === 0
+        };
         const p0 = reduce(curry(checkPlayerMoves)(playerMoves.player0), false)(this.winningCombinations);
         const p1 = reduce(curry(checkPlayerMoves)(playerMoves.player1), false)(this.winningCombinations);
         return (p0 ? Either.Left(players[0]) : Either.Right(p1));
