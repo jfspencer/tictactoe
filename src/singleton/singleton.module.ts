@@ -11,10 +11,9 @@ import {DomainWorker} from '@singleton/domain.worker';
 })
 export class SingletonModule {
   constructor(@Optional() @SkipSelf() parentModule: SingletonModule) {
-    if (parentModule) {
-      throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only'
-      );
-    }
+    const coreModuleError = () => {
+      throw new Error('CoreModule is already loaded. Import it in the AppModule only')
+    };
+    parentModule ? coreModuleError() : null;
   }
 }

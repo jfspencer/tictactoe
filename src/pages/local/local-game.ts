@@ -61,7 +61,7 @@ export class LocalGamePage {
     //generate a new board state for the game-board component
     this.boardState = this.domainWorker.newBoardState(this.game);
 
-    //check if there is a winner
+    //check for winner
     const winner = this.domainWorker.determineWinner(this.game.sequence, this.game.players);
 
     (get(winner, 'name') === 'Scratch Game!' ? Either.Left(this.endGameAlert(winner.name)) : Either.Right(winner))

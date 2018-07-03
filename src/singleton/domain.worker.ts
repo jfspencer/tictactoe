@@ -37,11 +37,13 @@ export class DomainWorker {
     return Future.of(isLocal ? newLocalGame : newLocalGame);
   }
 
+  //
   updateGameSequence(game: Game, turn: TurnEvent) {
     game.sequence.moves = union(game.sequence.moves, [turn])
     return assign({}, game);
   }
 
+  //provided a game object, generate a new board state for the UI to consume
   newBoardState(game: Game) : BoardState {
     const newBoardState = reduce((boardState, turnEvent: TurnEvent ) => {
       boardState[turnEvent.move] = turnEvent.turn;
@@ -50,23 +52,40 @@ export class DomainWorker {
     return cloneDeep(newBoardState);
   }
 
+  //compute a winner returning the player, or null to continue
   determineWinner(moveSeq: MoveSequence, players: GamePlayers): Player | null {
-    return (moveSeq.moves.length >= 9 ? Either.Left({name:'Scratch Game!'}) : Either.Right(null))
+    //check to see if more then 9 moves have been made, if yes then exit left with a scratch game
+    //otherwise continue right
+    return (moveSeq.moves.length > 9 ? Either.Left({name:'Scratch Game!'}) : Either.Right(null))
       .flatMap(isNull => {
+        //reduce the player TurnEvent[] into a string[] for simply winning combo comparison
+        //reduce was used over map because reduce provides clear intent on the resulting Type
+        // and allows the return type to be sometihng other than an array. in this case an object with 2 []s
         const playerMoves = reduce((accum, val: TurnEvent) => {
           accum['player' + val.turn] = union(accum['player' + val.turn], [val.move]);
           return accum;
         }, {player0: [], player1: []})(moveSeq.moves);
 
-        const checkPlayerMoves = (moves, won, combo:string[]) => {
-          const test = difference(combo, moves)
+        //function to determine a winning combo
+        const checkPlayerMoves = (moves, won, winningCombos:string[]) => {
+          //diff player moves against winning combos, if result is greater than 0, the player has won
+          const test = difference(winningCombos, moves)
           return won ? true : test.length === 0
         };
+
+        //check player0's move sequence for a winning combo
         const p0 = reduce(curry(checkPlayerMoves)(playerMoves.player0), false)(this.winningCombinations);
+
+        //check player1's move sequence for a winning combo
         const p1 = reduce(curry(checkPlayerMoves)(playerMoves.player1), false)(this.winningCombinations);
+
+        //if player0 won escape to the left, otherwise return player1
         return (p0 ? Either.Left(players[0]) : Either.Right(p1));
       })
+      // check player1 for a win, if player1 won, escape to the left, otherwise return isNull
+      //signaling a continue to the UI logic
       .flatMap(p1DidWin => p1DidWin ? Either.Left(players[1]) : Either.Right(null))
+      //apply catamorph to lift the value out of the either monad with the identity function
       .cata(v => v, v => v);
   }
 
@@ -82,6 +101,7 @@ export class DomainWorker {
     ['UR', 'MM', 'LL'], //top right to bottom left diagnoal
   ];
 
+  //create a new empty board state
   private buildEmptyBoard(): BoardState {
     return cloneDeep({
       UL: null, UM: null, UR: null,
