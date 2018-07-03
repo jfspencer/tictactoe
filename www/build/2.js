@@ -218,7 +218,7 @@ var PlayerHeaderComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__singleton_domain_worker__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_monet__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_monet__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_monet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_monet__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -277,7 +277,7 @@ var LocalGamePage = /** @class */ (function () {
         this.game = this.domainWorker.updateGameSequence(this.game, turn);
         //generate a new board state for the game-board component
         this.boardState = this.domainWorker.newBoardState(this.game);
-        //check if there is a winner
+        //check for winner
         var winner = this.domainWorker.determineWinner(this.game.sequence, this.game.players);
         (Object(__WEBPACK_IMPORTED_MODULE_2_lodash__["get"])(winner, 'name') === 'Scratch Game!' ? __WEBPACK_IMPORTED_MODULE_4_monet__["Either"].Left(this.endGameAlert(winner.name)) : __WEBPACK_IMPORTED_MODULE_4_monet__["Either"].Right(winner))
             .flatMap(function (w) {
@@ -297,10 +297,9 @@ var LocalGamePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-local-game',template:/*ion-inline-start:"/Users/sailer/Shipt/tictactoe/src/pages/local/local-game.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>TicTacToe</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <player-header [turn]="activeTurn" [players]="players"></player-header>\n  <game-board [turn]="activeTurn" [boardState]="boardState" (turnEvents)="processTurn($event)"></game-board>\n  <ion-fab bottom right (click)="promptForNewGame()">\n    <button ion-fab><ion-icon name="add"></ion-icon></button>\n  </ion-fab>\n</ion-content>\n'/*ion-inline-end:"/Users/sailer/Shipt/tictactoe/src/pages/local/local-game.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__singleton_domain_worker__["a" /* DomainWorker */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__singleton_domain_worker__["a" /* DomainWorker */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_3__singleton_domain_worker__["a" /* DomainWorker */]])
     ], LocalGamePage);
     return LocalGamePage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=local-game.js.map

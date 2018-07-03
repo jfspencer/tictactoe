@@ -56,7 +56,7 @@ export class DomainWorker {
   determineWinner(moveSeq: MoveSequence, players: GamePlayers): Player | null {
     //check to see if more then 9 moves have been made, if yes then exit left with a scratch game
     //otherwise continue right
-    return (moveSeq.moves.length > 9 ? Either.Left({name:'Scratch Game!'}) : Either.Right(null))
+    return (moveSeq.moves.length >= 9 ? Either.Left({name:'Scratch Game!'}) : Either.Right(null))
       .flatMap(isNull => {
         //reduce the player TurnEvent[] into a string[] for simply winning combo comparison
         //reduce was used over map because reduce provides clear intent on the resulting Type

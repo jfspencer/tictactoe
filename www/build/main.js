@@ -93,11 +93,11 @@ var TabsPage = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DomainWorker; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_interfaces__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_interfaces__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_fp__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_fp___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_monet__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_monet__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_monet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_monet__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_fluture__ = __webpack_require__(256);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_fluture___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_fluture__);
@@ -158,10 +158,12 @@ var DomainWorker = /** @class */ (function () {
         localStorage.setItem('activeGame', gameId);
         return __WEBPACK_IMPORTED_MODULE_4_fluture__["Future"].of(isLocal ? newLocalGame : newLocalGame);
     };
+    //
     DomainWorker.prototype.updateGameSequence = function (game, turn) {
         game.sequence.moves = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["union"])(game.sequence.moves, [turn]);
         return Object(__WEBPACK_IMPORTED_MODULE_6_lodash__["assign"])({}, game);
     };
+    //provided a game object, generate a new board state for the UI to consume
     DomainWorker.prototype.newBoardState = function (game) {
         var newBoardState = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(function (boardState, turnEvent) {
             boardState[turnEvent.move] = turnEvent.turn;
@@ -169,25 +171,37 @@ var DomainWorker = /** @class */ (function () {
         }, this.buildEmptyBoard())(game.sequence.moves);
         return Object(__WEBPACK_IMPORTED_MODULE_6_lodash__["cloneDeep"])(newBoardState);
     };
+    //compute a winner returning the player, or null to continue
     DomainWorker.prototype.determineWinner = function (moveSeq, players) {
         var _this = this;
+        //check to see if more then 9 moves have been made, if yes then exit left with a scratch game
+        //otherwise continue right
         return (moveSeq.moves.length >= 9 ? __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Left({ name: 'Scratch Game!' }) : __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Right(null))
             .flatMap(function (isNull) {
+            //reduce the player TurnEvent[] into a string[] for simply winning combo comparison
+            //reduce was used over map because reduce provides clear intent on the resulting Type
+            // and allows the return type to be sometihng other than an array. in this case an object with 2 []s
             var playerMoves = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(function (accum, val) {
                 accum['player' + val.turn] = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["union"])(accum['player' + val.turn], [val.move]);
                 return accum;
             }, { player0: [], player1: [] })(moveSeq.moves);
-            var checkPlayerMoves = function (moves, won, combo) {
-                var test = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["difference"])(combo, moves);
+            //function to determine a winning combo
+            var checkPlayerMoves = function (moves, won, winningCombos) {
+                //diff player moves against winning combos, if result is greater than 0, the player has won
+                var test = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["difference"])(winningCombos, moves);
                 return won ? true : test.length === 0;
             };
+            //check player0's move sequence for a winning combo
             var p0 = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["curry"])(checkPlayerMoves)(playerMoves.player0), false)(_this.winningCombinations);
+            //check player1's move sequence for a winning combo
             var p1 = Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["reduce"])(Object(__WEBPACK_IMPORTED_MODULE_2_lodash_fp__["curry"])(checkPlayerMoves)(playerMoves.player1), false)(_this.winningCombinations);
+            //if player0 won escape to the left, otherwise return player1
             return (p0 ? __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Left(players[0]) : __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Right(p1));
         })
             .flatMap(function (p1DidWin) { return p1DidWin ? __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Left(players[1]) : __WEBPACK_IMPORTED_MODULE_3_monet__["Either"].Right(null); })
             .cata(function (v) { return v; }, function (v) { return v; });
     };
+    //create a new empty board state
     DomainWorker.prototype.buildEmptyBoard = function () {
         return Object(__WEBPACK_IMPORTED_MODULE_6_lodash__["cloneDeep"])({
             UL: null, UM: null, UR: null,
@@ -206,13 +220,13 @@ var DomainWorker = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 201:
+/***/ 202:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(225);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -220,7 +234,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 224:
+/***/ 225:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -283,7 +297,7 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 250:
+/***/ 251:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -414,9 +428,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 var SingletonModule = /** @class */ (function () {
     function SingletonModule(parentModule) {
-        if (parentModule) {
+        var coreModuleError = function () {
             throw new Error('CoreModule is already loaded. Import it in the AppModule only');
-        }
+        };
+        parentModule ? coreModuleError() : null;
     }
     SingletonModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
@@ -511,5 +526,5 @@ var Persistence = /** @class */ (function () {
 
 /***/ })
 
-},[201]);
+},[202]);
 //# sourceMappingURL=main.js.map
