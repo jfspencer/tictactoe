@@ -72,6 +72,24 @@ describe('Service: DomainWorker', () => {
     expect(winner.name).toBe('Alfred Hitchcock');
   });
 
+  const p1Winner9Moves: MoveSequence = {
+    _id: '123', gameId: 'string', type: RecordType.MoveSequence,
+    moves: [
+      {move: 'UL', turn: 0, time: 1}, {move: 'ML', turn: 1, time: 2}, {move: 'UM', turn: 0, time: 3},
+      {move: 'MM', turn: 1, time: 4}, {move: 'LL', turn: 0, time: 5}, {move: 'LM', turn: 1, time: 3},
+      {move: 'MR', turn: 0, time: 4}, {move: 'LR', turn: 1, time: 5}, {move: 'UR', turn: 0, time: 3}
+    ]
+  };
+  it('determineWinner should return player1 for 9th move win', () => {
+    const winner = domainWorker.determineWinner(
+      p1Winner9Moves,
+      [
+        {name: 'Alfred Hitchcock', turnId: 0, dbId: 'player0'},
+        {name: 'Christopher Nolan', turnId: 1, dbId: 'player1'}
+      ]);
+    expect(winner.name).toBe('Alfred Hitchcock');
+  });
+
 
   it('startGame should return a well formed game object', () => {
     const game = domainWorker.startGame(true);
